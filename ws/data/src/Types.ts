@@ -43,5 +43,20 @@ interface Server {
 interface Servers {
     [url:string]:Server;
 }
-
-export {TextData,Token,WalletData,Contact,Wallet,ClientData,Server,Servers}
+interface SubsData {
+    addresses?: String[]
+    accounts?: String[]
+    accounts_proposed?: String[]
+    streams?: String[]
+    books?: String[]
+}
+interface TrustLine {
+    "account": string
+    "balance": string
+    "currency": string
+    "limit": string
+    "limit_peer": string
+    "no_ripple": boolean
+    "no_ripple_peer": boolean
+}
+export {TextData,Token,WalletData,Contact,Wallet,ClientData,Server,Servers,SubsData,TrustLine}
