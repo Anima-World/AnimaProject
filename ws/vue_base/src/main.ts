@@ -1,10 +1,13 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import index from './router';
+import router from './router';
 
 const app = createApp(App);
-app.use(index);
+app.use(router);
 app.mount('#app');
 
+app.config.globalProperties.open = (path:string) => {
+    router.push(path)
+}
 // const c = chrome;
 // console.log(c.contentSettings);

@@ -1,22 +1,18 @@
-<script setup lang="ts">
-
-</script>
-
 <template>
   <div class="login">
     <div class="address_top">
       <div class="address_top_left">
         <div class="login_back_button button">
-          <a href="/">
+          <div class="button" @click="open('/')">
             <img src="@/assets/icons/back-btn.svg" alt="back button">
-          </a>
+          </div>
         </div>
-        <div class="address_button_refresh button">
+        <div class="address_button_refresh button" @click="update()">
           <img src="@/assets/icons/refresh.svg" alt="refresh">
         </div>
       </div>
       <div class="address_top_right">
-        <div class="address_button_clipboard button">
+        <div class="address_button_clipboard button" @click="copy()">
           <img src="@/assets/icons/clipboard.svg" alt="clipboard">
         </div>
       </div>
@@ -24,16 +20,48 @@
     <form action="" class="login_form">
       <div class="login_form_item">
         <h2 class="login_label">Address</h2>
-        <p class="address_item_value">rHSmUv8HrvtCnaG8V8PnJLiEUEtRZfitu9</p>
+        <p class="address_item_value">{{ address }}</p>
       </div>
       <div class="login_form_item">
         <h2 class="login_label">Seed</h2>
-        <p class="address_item_value">ED4E9BB4BF1FF9B2ACCE6BA9E4B121BB7F4A03ABC92F9D3FB81F3ABFFD542775B9</p>
+        <p class="address_item_value">{{ seed }}</p>
       </div>
-      <div class="login_button button">Save and login</div>
+      <div class="login_button button" @click="save()">Save and login</div>
     </form>
   </div>
 </template>
+
+<script lang="ts">
+import { ref } from "vue";
+export default {
+  setup() {
+    return {
+      address:ref(""),
+      seed:ref(""),
+    }
+  },
+  mounted() {
+    this.update();
+  },
+  methods: {
+    update() {
+      this.address=`address${Math.random()}`;
+      this.seed=`address${Math.random()}`;
+    },
+    async copy(){
+      const data = JSON.stringify({
+        address:this.address,
+        seed:this.seed,
+      },null,2)
+      await navigator.clipboard.writeText(data);
+    },
+    async save(){
+      //todo save
+      this.open('home');
+    }
+  }
+}
+</script>
 
 <style scoped>
 .login {
@@ -43,6 +71,8 @@
 }
 .address_top {
   display: flex;
+  width: 200px;
+  margin: 0 auto;
   justify-content: space-between;
   align-items: center;
 }

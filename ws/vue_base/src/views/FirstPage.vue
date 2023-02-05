@@ -5,12 +5,12 @@
   <div class="menu_box" style="opacity: 1;">
     <img src="@/assets/logo.svg" alt="hand icon" class="main_icon">
     <h1 class="menu_title">Welcome<br>to Anima Wallet</h1>
-    <a href="/generate">
+    <div class="button" @click="open('generate')">
       <button class="create_wallet">Generate new wallet</button>
-    </a>
-    <a href="/import">
+    </div>
+    <div class="button" @click="open('import')">
       <button class="my_wallet">Add wallet</button>
-    </a>
+    </div>
   </div>
 </template>
 
