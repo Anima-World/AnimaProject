@@ -3,7 +3,7 @@ import * as xrpl from "xrpl";
 import {delay} from "./index";
 import {Wallet, SubsData, TrustLine} from "data";
 import {BaseRequest} from "xrpl/dist/npm/models/methods/baseMethod";
-import {Payment} from "xrpl";
+import {AccountCurrenciesResponse, AccountNFTsResponse, AccountOffersResponse, Payment} from "xrpl";
 import {Transaction} from "xrpl/dist/npm/models/transactions";
 
 export default class {
@@ -27,8 +27,7 @@ export default class {
             } catch (e) {
                 console.error(`core loop reconnect error`,e);
             }
-            this.eventEmitter.emit("tick")
-            //todo custom updates?
+            this.eventEmitter.emit("tick");
         }
     }
     async connect(server:string="wss://s.altnet.rippletest.net/") {
@@ -74,7 +73,7 @@ export default class {
     }
     async request(request:any):Promise<any> {
         if(!this.client || !this.client.isConnected())
-            throw "client is not connected";
+            throw "client is not connected";//todo requests queue & waiting for connection
         return await this.client.request(request);
     }
     async prepareTx<T extends Transaction>(transaction:T):Promise<T> {
@@ -118,6 +117,40 @@ export default class {
             req_data.marker= PlaceMarker;
         let trustlines = await this.request(req_data);
         return {result:trustlines.result.lines,pm:trustlines.result.marker};
+    }
+    async getTxHistory(address:string, marker:number|undefined=undefined):Promise<any> {
+        let req_data:any = {
+            "command": "account_tx",
+            "account": address,
+            "binary": false,
+            "forward": true,
+            "ledger_index_max": -1,
+            "ledger_index_min": -1,
+            "limit": 100
+        }
+        if(marker)
+            req_data.marker = marker;
+        const transactions = await this.request(req_data);
+        return {result:transactions.result.transactions,pm:transactions.result.marker};
+    }
+    async getCurrencies(address:string):Promise<AccountCurrenciesResponse> {
+        return await this.request({
+            "command": "account_currencies",
+            "account": address,
+            "ledger_index": "validated"
+        });
+    }
+    async getOffers(address:string):Promise<AccountOffersResponse> {
+        return await this.request({
+            "command": "account_offers",
+            "account": address
+        });
+    }
+    async getNFT(address:string):Promise<AccountNFTsResponse> {
+        return await this.request({
+            "command": "account_nfts",
+            "account": address
+        });
     }
     public static generateWallet(name:string="generated wallet"): { custom:Wallet,xrp:xrpl.Wallet } {
         const xrplWallet = xrpl.Wallet.generate();
