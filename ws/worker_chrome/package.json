@@ -1,0 +1,12 @@
+{
+  "name": "worker_chrome",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "node ./dist/index.js"
+  },
+  "devDependencies": {
+    "webpack": "~5.75.0",
+    "webpack-cli": "^5.0.1"
+  }
+}
