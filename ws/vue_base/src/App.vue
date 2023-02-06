@@ -20,6 +20,9 @@ import { RouterView } from 'vue-router'
     -webkit-user-drag: none;
     list-style-type: none;
   }
+  input {
+    text-align: left;
+  }
   body, #app {
     position: relative;
     left: 0;

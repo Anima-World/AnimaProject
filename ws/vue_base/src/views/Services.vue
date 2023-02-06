@@ -11,7 +11,6 @@
         </div>
       </div>
       <div class="content main_content app_container">
-        <h1 class="button" @click="open('/')">Work in progress</h1>
       </div>
     </div>
   </div>
@@ -48,16 +47,5 @@ export default {
   border-bottom: 1px solid #ccc;
   height: 60px;
   overflow: hidden;
-}
-h1 {
-  width: 100%;
-  max-width: 200px;
-  margin: 80px auto;
-  display: block;
-  background: #ffb82f;
-  border: 1px solid #cccccc;
-  border-radius: 50px;
-  font-weight: 600;
-  padding: 10px 0;
 }
 </style>
