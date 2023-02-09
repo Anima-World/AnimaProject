@@ -1,10 +1,16 @@
 import {CoreEventEmitter} from "./EventEmitter";
 import * as xrpl from "xrpl";
-import {delay} from "./index";
-import {Wallet, SubsData, TrustLine} from "data";
-import {BaseRequest} from "xrpl/dist/npm/models/methods/baseMethod";
-import {AccountCurrenciesResponse, AccountNFTsResponse, AccountOffersResponse, Payment} from "xrpl";
+import {Wallet, SubsData, TrustLine, delay} from "data";
+import {
+    AccountCurrenciesResponse,
+    AccountInfoResponse,
+    AccountNFTsResponse,
+    AccountOffersResponse,
+    Payment,
+    SubmitResponse
+} from "xrpl";
 import {Transaction} from "xrpl/dist/npm/models/transactions";
+import {LedgerIndex} from "xrpl/dist/npm/models/common";
 
 export default class {
     public eventEmitter = new CoreEventEmitter();
@@ -82,11 +88,10 @@ export default class {
             throw "client is not connected";
         return await this.client.autofill(transaction);
     }
-    async payment(payment:Payment,wallet:xrpl.Wallet):Promise<any> {
+    async payment(payment:Payment,wallet:xrpl.Wallet):Promise<SubmitResponse> {
         console.log("payment",payment);
         if(!this.client || !this.client.isConnected())
             throw "client is not connected";
-        payment = await this.client.autofill(payment);
         return await this.client.submit(payment,{wallet});
     }
     async getAllTrustLines(issuer:string, limit:number|undefined=undefined):Promise<TrustLine[]> {
@@ -140,6 +145,17 @@ export default class {
             "ledger_index": "validated"
         });
     }
+    async getAccountInfo(address:string):Promise<AccountInfoResponse> {
+        try {
+            return await this.request({
+                "command": "account_info",
+                "account": address,
+                "ledger_index": "validated"
+            });
+        } catch (e) {
+            return null;
+        }
+    }
     async getOffers(address:string):Promise<AccountOffersResponse> {
         return await this.request({
             "command": "account_offers",
@@ -151,6 +167,9 @@ export default class {
             "command": "account_nfts",
             "account": address
         });
+    }
+    async fund(wallet:xrpl.Wallet):Promise<any> {
+        return await this.client.fundWallet(wallet);
     }
     public static generateWallet(name:string="generated wallet"): { custom:Wallet,xrp:xrpl.Wallet } {
         const xrplWallet = xrpl.Wallet.generate();

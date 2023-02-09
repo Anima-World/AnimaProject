@@ -10,7 +10,7 @@
           </div>
         </li>
         <li>
-          <div class="search w-[22px] h-[22px] flex items-center"><img src="@/assets/icons/search.svg" alt="search"><input type="text" placeholder="Поиск"></div>
+<!--      todo поиск    <div class="search w-[22px] h-[22px] flex items-center"><img src="@/assets/icons/search.svg" alt="search"><input type="text" placeholder="Поиск"></div>-->
         </li>
       </ul>
       <div class="filter_box">
@@ -19,108 +19,17 @@
     </div>
     <div class="tokens">
       <ul class="tokens_list">
-        <p class="tokens_date">24 сентября</p>
-        <li style="opacity: 1; transform: scale(1);">
+<!--        todo даты <p class="tokens_date">24 сентября</p>-->
+        <li style="opacity: 1; transform: scale(1);" v-for="(tx,index) in transactions.result" :key="index">
           <div class="tokens_item">
             <div class="tokens_left"><img src="@/assets/images/tokens/1.svg" alt="image client">
               <div class="tokens_info">
-                <h2 class="wallet_addres">0xfBD...45</h2>
-                <p class="transaction_type">Входящий платеж</p>
+                <h2 class="wallet_addres">{{ tx.tx.Account}} > {{ tx.tx.Destination }}</h2>
+                <p class="transaction_type">{{ tx.tx.TransactionType }}</p>
               </div>
             </div>
             <div class="tokens_right">
-              <p class="transaction_amount">40 AnimaCoin</p>
-            </div>
-          </div>
-        </li>
-        <li style="opacity: 1; transform: scale(1);">
-          <div class="tokens_item">
-            <div class="tokens_left"><img src="@/assets/images/tokens/1.svg" alt="image client">
-              <div class="tokens_info">
-                <h2 class="wallet_addres">0xfBD...45</h2>
-                <p class="transaction_type">Исходящий платеж</p>
-              </div>
-            </div>
-            <div class="tokens_right">
-              <p class="transaction_amount">40 Solo</p>
-            </div>
-          </div>
-        </li>
-        <li style="opacity: 1; transform: scale(1);">
-          <div class="tokens_item">
-            <div class="tokens_left"><img src="@/assets/images/tokens/1.svg" alt="image client">
-              <div class="tokens_info">
-                <h2 class="wallet_addres">0xfBD...45</h2>
-                <p class="transaction_type">Открыть ордер</p>
-              </div>
-            </div>
-            <div class="tokens_right">
-              <p class="transaction_amount">40 Coreum</p>
-            </div>
-          </div>
-        </li>
-        <li style="opacity: 1; transform: scale(1);">
-          <div class="tokens_item">
-            <div class="tokens_left"><img src="@/assets/images/tokens/1.svg" alt="image client">
-              <div class="tokens_info">
-                <h2 class="wallet_addres">0xfBD...45</h2>
-                <p class="transaction_type">Закрыть ордер</p>
-              </div>
-            </div>
-            <div class="tokens_right">
-              <p class="transaction_amount">40 XPunks</p>
-            </div>
-          </div>
-        </li>
-        <li style="opacity: 1; transform: scale(1);">
-          <div class="tokens_item">
-            <div class="tokens_left"><img src="@/assets/images/tokens/1.svg" alt="image client">
-              <div class="tokens_info">
-                <h2 class="wallet_addres">0xfBD...45</h2>
-                <p class="transaction_type">ТДобавлен актив</p>
-              </div>
-            </div>
-            <div class="tokens_right">
-              <p class="transaction_amount">40 Coreum</p>
-            </div>
-          </div>
-        </li>
-        <li style="opacity: 1; transform: scale(1);">
-          <div class="tokens_item">
-            <div class="tokens_left"><img src="@/assets/images/tokens/1.svg" alt="image client">
-              <div class="tokens_info">
-                <h2 class="wallet_addres">0xfBD...45</h2>
-                <p class="transaction_type">Входящий платеж</p>
-              </div>
-            </div>
-            <div class="tokens_right">
-              <p class="transaction_amount">40 Solo</p>
-            </div>
-          </div>
-        </li>
-        <li style="opacity: 1; transform: scale(1);">
-          <div class="tokens_item">
-            <div class="tokens_left"><img src="@/assets/images/tokens/1.svg" alt="image client">
-              <div class="tokens_info">
-                <h2 class="wallet_addres">0xfBD...45</h2>
-                <p class="transaction_type">Исходящий платеж</p>
-              </div>
-            </div>
-            <div class="tokens_right">
-              <p class="transaction_amount">40 Coreum</p>
-            </div>
-          </div>
-        </li>
-        <li style="opacity: 1; transform: scale(1);">
-          <div class="tokens_item">
-            <div class="tokens_left"><img src="@/assets/images/tokens/1.svg" alt="image client">
-              <div class="tokens_info">
-                <h2 class="wallet_addres">0xfBD...45</h2>
-                <p class="transaction_type">Открыть ордер</p>
-              </div>
-            </div>
-            <div class="tokens_right">
-              <p class="transaction_amount">40 Coreum</p>
+              <p class="transaction_amount">{{ typeof tx.tx.Amount == "number"? tx.tx.Amount*0.000001: tx.tx.Amount }}</p>
             </div>
           </div>
         </li>
@@ -128,6 +37,23 @@
     </div>
   </div>
 </template>
+<script>
+  import {ref} from "vue";
+  export default {
+    setup(){
+      const transactions = ref([]);
+      return {transactions};
+    },
+    mounted() {
+      this.update();
+    },
+    methods: {
+      async update(){
+        this.transactions = await this.worker.send("getTxHistory",{address:this.clientData.settings.wallet});
+      }
+    }
+  }
+</script>
 
 <style scoped>
 .tokens_date,.wallet_addres {
@@ -138,6 +64,7 @@
   height: 338px;
   overflow-x: hidden;
   overflow-y: auto;
+  text-align: left;
 }
 .filter_icon {
   position: relative;

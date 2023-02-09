@@ -10,25 +10,25 @@
           </div>
         </li>
         <li>
-          <div class="search w-[22px] h-[22px] flex items-center"><img src="@/assets/icons/search.svg" alt="search"><input type="text" placeholder="Поиск"></div>
+<!--          <div class="search w-[22px] h-[22px] flex items-center"><img src="@/assets/icons/search.svg" alt="search"><input type="text" placeholder="Поиск"></div>-->
         </li>
       </ul>
-      <div class="filter_box">
-        <img src="@/assets/icons/filter.svg" alt="filter icon">
-      </div>
+<!--      <div class="filter_box">-->
+<!--        <img src="@/assets/icons/filter.svg" alt="filter icon">-->
+<!--      </div>-->
     </div>
     <div class="tokens">
       <ul class="tokens_list">
-        <li style="opacity: 1; transform: scale(1);">
+        <li style="opacity: 1; transform: scale(1);" v-for="(token,index) in tokens" :key="index">
           <div class="tokens_item">
             <div class="tokens_left"><img src="@/assets/images/tokens/1.svg" alt="image client">
               <div class="tokens_info">
-                <h2 class="wallet_addres">name</h2>
-                <p class="transaction_type">address</p>
+                <h2 class="wallet_addres">{{ token }}</h2>
+                <p class="transaction_type">{{ token }}</p>
               </div>
             </div>
             <div class="tokens_right">
-              <p class="transaction_amount">40 AnimaCoin</p>
+              <p class="transaction_amount">{{ token }}</p>
             </div>
           </div>
         </li>
@@ -37,6 +37,19 @@
   </div>
 </template>
 
+<script lang="js">
+import {ref} from "vue";
+
+export default {
+  setup(){
+    const tokens = ref([]);
+    return  {tokens};
+  },
+  mounted() {
+    this.tokens=this.clientData.tokens;
+  }
+}
+</script>
 <style scoped>
 .tokens_date,.wallet_addres {
   text-align: left;

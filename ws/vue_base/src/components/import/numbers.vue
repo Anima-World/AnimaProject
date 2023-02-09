@@ -6,14 +6,14 @@
   </button>
     <h2 class="secret_title">Secret numbers</h2>
     <ul class="secret_list">
-      <li class="secret_list_item" style="opacity: 1; transform: scale(1);"><span class="secret_list_item_latter">A</span><input class="secret_input" type="text" placeholder="______" maxlength="6"></li>
-      <li class="secret_list_item" style="opacity: 1; transform: scale(1);"><span class="secret_list_item_latter">B</span><input class="secret_input" type="text" placeholder="______" maxlength="6"></li>
-      <li class="secret_list_item" style="opacity: 1; transform: scale(1);"><span class="secret_list_item_latter">C</span><input class="secret_input" type="text" placeholder="______" maxlength="6"></li>
-      <li class="secret_list_item" style="opacity: 1; transform: scale(1);"><span class="secret_list_item_latter">D</span><input class="secret_input" type="text" placeholder="______" maxlength="6"></li>
-      <li class="secret_list_item" style="opacity: 1; transform: scale(1);"><span class="secret_list_item_latter">E</span><input class="secret_input" type="text" placeholder="______" maxlength="6"></li>
-      <li class="secret_list_item" style="opacity: 1; transform: scale(1);"><span class="secret_list_item_latter">F</span><input class="secret_input" type="text" placeholder="______" maxlength="6"></li>
-      <li class="secret_list_item" style="opacity: 1; transform: scale(1);"><span class="secret_list_item_latter">G</span><input class="secret_input" type="text" placeholder="______" maxlength="6"></li>
-      <li class="secret_list_item" style="opacity: 1; transform: scale(1);"><span class="secret_list_item_latter">H</span><input class="secret_input" type="text" placeholder="______" maxlength="6"></li>
+      <li class="secret_list_item" style="opacity: 1; transform: scale(1);"><span class="secret_list_item_latter">A</span><input v-model="lines.a" class="secret_input" type="text" placeholder="______" maxlength="6"></li>
+      <li class="secret_list_item" style="opacity: 1; transform: scale(1);"><span class="secret_list_item_latter">B</span><input v-model="lines.b" class="secret_input" type="text" placeholder="______" maxlength="6"></li>
+      <li class="secret_list_item" style="opacity: 1; transform: scale(1);"><span class="secret_list_item_latter">C</span><input v-model="lines.c" class="secret_input" type="text" placeholder="______" maxlength="6"></li>
+      <li class="secret_list_item" style="opacity: 1; transform: scale(1);"><span class="secret_list_item_latter">D</span><input v-model="lines.d" class="secret_input" type="text" placeholder="______" maxlength="6"></li>
+      <li class="secret_list_item" style="opacity: 1; transform: scale(1);"><span class="secret_list_item_latter">E</span><input v-model="lines.e" class="secret_input" type="text" placeholder="______" maxlength="6"></li>
+      <li class="secret_list_item" style="opacity: 1; transform: scale(1);"><span class="secret_list_item_latter">F</span><input v-model="lines.f" class="secret_input" type="text" placeholder="______" maxlength="6"></li>
+      <li class="secret_list_item" style="opacity: 1; transform: scale(1);"><span class="secret_list_item_latter">G</span><input v-model="lines.g" class="secret_input" type="text" placeholder="______" maxlength="6"></li>
+      <li class="secret_list_item" style="opacity: 1; transform: scale(1);"><span class="secret_list_item_latter">H</span><input v-model="lines.h" class="secret_input" type="text" placeholder="______" maxlength="6"></li>
     </ul>
     <div class="button" @click="add()">
       <button class="secret_button" style="opacity: 1; transform: scaleX(1);">Войти</button>
@@ -22,9 +22,31 @@
 </template>
 
 <script lang="ts">
+  import {ref} from "vue";
+
   export default {
+    setup(){
+      const lines = ref({
+        a: "",
+        b: "",
+        c: "",
+        d: "",
+        e: "",
+        f: "",
+        g: "",
+        h: "",
+      });
+      return {lines};
+    },
     methods: {
       add() {
+        const lines = this.lines;
+        const line = `${lines.a} ${lines.b} ${lines.c} ${lines.d} ${lines.e} ${lines.f} ${lines.g} ${lines.h}`;
+        this.worker.send("saveWallet",{
+          type:"numbers",
+          data:line,
+          name:"imported wallet"
+        });
         this.open('/home');
       }
     }

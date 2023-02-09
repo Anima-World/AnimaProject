@@ -13,23 +13,23 @@
       <div class="content main_content app_container">
         <div class="send">
           <div class="send_top_title">
-            <h2>AnimaCoin</h2>
+            <h2>XRP</h2>
             <img src="@/assets/icons/down-arrow.svg" alt="down icon" />
           </div>
           <h2 class="send_value">100</h2>
-          <h3 class="send_deposit">$0.00 USD</h3>
+          <h3 class="send_deposit">$0.00 USD(WIP)</h3>
           <div class="send_form_box">
             <form action="" class="send_form">
-              <label htmlFor="Адрес получателя">Адрес получателя</label>
-              <input type="text" id="Адрес получателя" placeholder="0xfBD...45" />
-              <label class="Примечание">Примечание</label>
+              <label>Address</label>
+              <input type="text" id="Адрес получателя" placeholder="rfBD...45" />
+              <label>Memo</label>
               <input
                   type="text"
                   id="Примечание"
-                  placeholder="Введите публичное примечание"
+                  placeholder="Memo input"
               />
               <button type="button" class="send_button">
-                <a href="/check">Отправить</a>
+                <a href="/check">Send</a>
               </button>
             </form>
           </div>
@@ -97,8 +97,6 @@ export default {
   color: #686868;
 }
 .main_content {
-  padding-top: 53px;
-  padding-bottom: 83px;
 }
 .track_value {
   width: 90px;
@@ -181,7 +179,6 @@ export default {
     font-size: 11px;
     line-height: 13px;
     color: #212121;
-    padding-left: 24px;
   }
 
   input {
@@ -199,7 +196,7 @@ export default {
     outline: none;
   }
   .send_button {
-    width: 100%;
+    width: max-content;
     background-color: #ffa420;
     box-shadow: 0px 6px 10px rgba(255, 164, 32, 0.2);
     border-radius: 50px;

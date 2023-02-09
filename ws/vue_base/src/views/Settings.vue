@@ -3,29 +3,28 @@
     <div class="top">
       <ul>
         <li>
-          <a href="/home">
+          <div class="button" @click="open('/home')">
             <button class="w-[22px] h-[22px] bg-[#ffa420] rounded-full flex items-center justify-center">
               <img src="@/assets/icons/home.svg" alt="home icon"/>
             </button>
-          </a>
+          </div>
         </li>
       </ul>
     </div>
 
     <div class="settings_main">
       <ul class="setting_main_list">
-        <a href="/settings/general">
+        <div class="button" @click="worker.send('clear')">
           <li class="setting_main_item">
-            <p>Общие</p>
+            <p>Clear store</p>
             <img src="@/assets/icons/down-arrow.svg" alt="down" />
           </li>
-        </a>
-        <a href="/settings/account">
-          <li class="setting_main_item" >
-            <p>Аккаунты</p>
-            <img src="@/assets/icons/down-arrow.svg" alt="down" />
+        </div>
+        <div class="button" @click="worker.send('fund')">
+          <li class="setting_main_item">
+            <p>Fund Wallet(testnet only)</p>
           </li>
-        </a>
+        </div>
       </ul>
     </div>
 
@@ -33,8 +32,9 @@
       <div class="second_footer">
         <div class="second_footer_children">
           <div class="second_footer_box">
-            <h2>Условия пользования</h2>
-            <h2>Поддержка</h2>
+            <h2>link 1</h2>
+            <h2>link 2</h2>
+            <h2>link 3</h2>
           </div>
         </div>
       </div>

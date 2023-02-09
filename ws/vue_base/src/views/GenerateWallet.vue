@@ -44,9 +44,10 @@ export default {
     this.update();
   },
   methods: {
-    update() {
-      this.address=`address${Math.random()}`;
-      this.seed=`address${Math.random()}`;
+    async update() {
+      const wallet = await this.worker.send("generateWallet");
+      this.address=wallet.classicAddress;
+      this.seed=wallet.seed;
     },
     async copy(){
       const data = JSON.stringify({
@@ -55,8 +56,9 @@ export default {
       },null,2)
       await navigator.clipboard.writeText(data);
     },
-    async save(){
-      //todo save
+    async save() {
+      //todo loading screen?
+      await this.worker.send('saveWallet',{type:"seed",data:this.seed,name:"generated wallet"})
       this.open('home');
     }
   }

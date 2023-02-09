@@ -1,11 +1,9 @@
 import {EventEmitter} from 'events';
 import {Transaction} from "xrpl/dist/npm/models/transactions";
 import {ResponseOnlyTxInfo} from "xrpl/dist/npm/models/common";
-interface Events {
+interface CoreEvents {
     'connection': (connected:boolean) => void; // connect/disconnect xrpl event
     'transaction': (tx:Transaction & ResponseOnlyTxInfo) => void; // tx event
-}
-interface CoreEvents extends Events {
     'tick': () => void; // loop tick - up to 10 executions per second
 }
 declare interface CoreEventEmitter {
@@ -20,4 +18,4 @@ declare interface CoreEventEmitter {
 class CoreEventEmitter extends EventEmitter {
     constructor() {super();}
 }
-export {CoreEventEmitter};
+export {CoreEventEmitter,CoreEvents as Events};

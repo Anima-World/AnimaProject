@@ -59,4 +59,4 @@ interface TrustLine {
     "no_ripple": boolean
     "no_ripple_peer": boolean
 }
-export {TextData,Token,WalletData,Contact,Wallet,ClientData,Server,Servers,SubsData,TrustLine}
+export {TextData,Token,WalletData,Contact,Wallet,ClientData,Server,Servers,Settings,SubsData,TrustLine}

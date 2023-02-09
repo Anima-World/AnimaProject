@@ -52,7 +52,7 @@ const index = createRouter({
     },
     {
       path: '/nft',
-      component: NFT
+      component: WIP//todo NFT
     },
     {
       path: '/send',

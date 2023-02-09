@@ -1,16 +1,74 @@
-<script setup lang="ts">
-import { RouterView } from 'vue-router'
-</script>
-
 <template>
   <RouterView/>
   <div class="border"></div>
+  <div v-if="loading||!connected" class="blockUsage">
+    <div class="spinner"></div>
+    <br><h1>{{!connected?"Connection":"Loading"}}</h1>
+  </div>
 </template>
+<script lang="ts">
+  import { RouterView } from 'vue-router'
+  import {ref} from "vue";
 
+  export default {
+    setup() {
+      const loading = ref(true);
+      const connected = ref(false);
+      return {loading,connected,RouterView};
+    },
+    async mounted() {
+      while (true) {
+        try {
+          this.connected = await this.worker.send("isConnected");
+          if(!this.clientData.settings)
+            this.clientData.settings = await this.worker.send("getSettings");
+          if(this.connected) {
+            if(this.loading) {
+              const wallets = await this.worker.send("getWallets");
+              this.clientData.wallets = wallets;
+              if(Object.keys(wallets).length>0) this.open('/home');
+              else this.open('/');
+              this.loading = false;
+            }
+            this.clientData.wallets = await this.worker.send("getWallets");
+            if(this.clientData.settings.wallet)
+              this.clientData.accountInfo = await this.worker.send("getAccountInfo");
+            if(this.clientData.settings.wallet)
+              this.clientData.tokens = await this.worker.send("getTokens");
+            else if(Object.keys(this.clientData.wallets||{}).length>0) this.clientData.settings.wallet=Object.keys(this.clientData.wallets).shift();
+          }
+        } catch (e) {
+          console.error('app loop error',e);
+        }
+        await this.delay(1000);
+      }
+    }
+  }
+</script>
 <style>
   @tailwind base;
   @tailwind components;
   @tailwind utilities;
+  .blockUsage {
+    position: absolute;
+    left:0;
+    top:0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(65, 65, 65, 0.75);
+    backdrop-filter: blur(10px);
+    color: white;
+    .spinner {
+      margin: 160px auto 0;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      border: 7px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 5px solid #ffa420;
+      animation: spin 2s linear infinite;
+    }
+  }
   * {
     text-align: center;
     box-sizing: border-box;
@@ -19,6 +77,11 @@ import { RouterView } from 'vue-router'
     user-select: none;
     -webkit-user-drag: none;
     list-style-type: none;
+
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 13px;
   }
   input {
     text-align: left;
@@ -74,18 +137,6 @@ import { RouterView } from 'vue-router'
   code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
-  }
-  .loader {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50px;
-    height: 50px;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid #ffa420;
-    animation: spin 2s linear infinite;
   }
   ::-webkit-scrollbar {
     width: 5px;

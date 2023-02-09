@@ -1,4 +1,4 @@
-import {Servers, TextData} from "./Types";
+import {Servers, Settings, TextData} from "./Types";
 
 const servers:Servers = {
     "wss://xrpl.ws/":{
@@ -28,4 +28,11 @@ const text:TextData = {
         'ru':'Кошелёк'
     }
 }
-export {text,servers}
+const defaultSettings:Settings = {
+    wallet:"",
+    lang:"en",
+    //server: "wss://xrpl.ws/"
+    server: "wss://s.altnet.rippletest.net/"
+}
+const delay = (ms:number=100) => new Promise(resolve => setTimeout(resolve,ms));
+export {text,servers,defaultSettings,delay}

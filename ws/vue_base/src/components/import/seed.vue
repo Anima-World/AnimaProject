@@ -9,8 +9,8 @@
       Enter seed of your account
     </h2>
     <div class="enter_input_box">
-      <input class="enter_input" type="text" placeholder="0xfBD...45" />
-      <div class="enter_input_icon">QR</div>
+      <input class="enter_input" v-model="seed" type="text" placeholder="rBD...45" />
+      <div class="enter_input_icon">S</div>
     </div>
     <div class="button" @click="add()">
       <button class="enter_button">Add</button>
@@ -19,14 +19,17 @@
 </template>
 
 <script lang="ts">
+  import {ref} from "vue";
+
   export default {
     setup(){
-
+      const seed = ref("");
+      return {seed};
     },
     methods:{
       add(){
+        this.worker.send("saveWallet",{type:"seed",data:this.seed,name:"imported wallet"});
         this.open("/home");
-        //todo
       }
     }
   }

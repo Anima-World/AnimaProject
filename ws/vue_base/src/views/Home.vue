@@ -9,9 +9,9 @@
           </div>
         </span>
           <div>
-            <div class="top__title">{{name}}</div>
+            <div class="top__title" style="font-size: 16px">{{name}}</div>
             <div class="top__wallet-info button" @click="copy()">
-              <span>{{address}}</span>
+              <span style="font-size: 11px">{{address}}</span>
               <span>
                 <img src="@/assets/icons/copy-document.svg" alt="copy clipboard" />
               </span>
@@ -26,10 +26,10 @@
       </div>
       <div class="content main_content app_container">
         <h1 class="track_value">
-          100
+          {{ balance }}
           <img class="w-6 h-6" src="@/assets/images/track-icon.svg" alt="track icon" />
         </h1>
-        <h2 class="track_usd">${{balanceUsd}} USD</h2>
+        <h2 class="track_usd">${{balanceUsd}} USD (WIP)</h2>
         <ul class="flex items-center justify-between w-[242px] mx-auto mt-6">
           <li>
             <div class="button" @click="open('/receive')">
@@ -94,19 +94,37 @@
 import { ref } from "vue";
 export default {
   setup() {
-    const balance = ref(100);
-    const balanceUsd = ref(0.00);
-    const address = ref("wallet address");
-    const name = ref("wallet name");
+    const balance = ref(0);
+    const balanceUsd = ref(0);
+    const address = ref("");
+    const name = ref("");
+    const timer = ref();
     return {
-      balance,balanceUsd,address,name
+      balance,balanceUsd,address,name,timer
     }
   },
   mounted() {
+    this.update();
+    this.timer = setTimeout(()=>{
+      try {
+        this.update()
+      } catch (e) {
+        console.error('home update error',e);
+      }
+    },500);
+  },
+  unmounted() {
+    clearTimeout(this.timer);
   },
   methods: {
     async copy(){
       await navigator.clipboard.writeText(this.address);
+    },
+    update() {
+      this.balance = this.clientData.accountInfo?.balance;
+      this.balanceUsd = 0;//todo
+      this.address = this.clientData.settings?.wallet;
+      this.name = (this.clientData.wallets||{})[this.address]?.name;
     }
   }
 }
@@ -158,7 +176,8 @@ export default {
   padding-bottom: 83px;
 }
 .track_value {
-  width: 90px;
+  width: max-content;
+  height: 43px;
   margin: 0 auto;
   display: flex;
   align-items: center;
