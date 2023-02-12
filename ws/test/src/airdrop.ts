@@ -1,6 +1,6 @@
 import {Client} from "core";
 import {convertStringToHex, Wallet, xrpToDrops} from "xrpl";
-import {TrustLine} from "data";
+import {TrustLine} from "utils";
 
 async function airdrop(trustline:string,wallet:Wallet,server:string="wss://xrplcluster.com") {
     const client = new Client();

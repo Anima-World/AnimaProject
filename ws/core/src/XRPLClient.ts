@@ -1,6 +1,6 @@
-import {CoreEventEmitter} from "./EventEmitter";
+import {EventEmitter} from "./EventEmitter";
 import * as xrpl from "xrpl";
-import {Wallet, SubsData, TrustLine, delay} from "data";
+import {SubsData, TrustLine, delay} from "utils";
 import {
     AccountCurrenciesResponse,
     AccountInfoResponse,
@@ -10,10 +10,9 @@ import {
     SubmitResponse
 } from "xrpl";
 import {Transaction} from "xrpl/dist/npm/models/transactions";
-import {LedgerIndex} from "xrpl/dist/npm/models/common";
 
 export default class {
-    public eventEmitter = new CoreEventEmitter();
+    public eventEmitter = new EventEmitter();
     public server?:string;
     public client?:xrpl.Client;
     private enabled = false;
@@ -36,16 +35,13 @@ export default class {
             this.eventEmitter.emit("tick");
         }
     }
-    async connect(server:string="wss://s.altnet.rippletest.net/") {
+    async connect(server:string="wss://s2.ripple.com/") {
         this.enabled=true;
         this.server=server;
         if(this.client)
             await this.disconnect();
         try {
             this.client = new xrpl.Client(this.server);
-            this.client.on("transaction", (txStream) => {
-                this.eventEmitter.emit("transaction", txStream.transaction);
-            });
             this.client.on("disconnected", async (code) => {
                 console.log(`client disconnected with code: ${code}`);
                 this.eventEmitter.emit("connection", false);
@@ -170,16 +166,5 @@ export default class {
     }
     async fund(wallet:xrpl.Wallet):Promise<any> {
         return await this.client.fundWallet(wallet);
-    }
-    public static generateWallet(name:string="generated wallet"): { custom:Wallet,xrp:xrpl.Wallet } {
-        const xrplWallet = xrpl.Wallet.generate();
-        return {
-            custom:{
-                seed:xrplWallet.seed,
-                address:xrplWallet.address,
-                name:name
-            },
-            xrp:xrplWallet
-        }
     }
 }

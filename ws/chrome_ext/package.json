@@ -1,0 +1,6 @@
+{
+  "name": "chrome_ext",
+  "scripts": {
+    "prepare": "node prepare.js"
+  }
+}

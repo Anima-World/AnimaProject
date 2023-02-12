@@ -1,0 +1,7 @@
+{
+  "name": "worker",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  }
+}

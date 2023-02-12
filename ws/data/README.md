@@ -1,2 +1,2 @@
-## Wallet Data
-**includes static data and types used in other modules**
+## Static data
+**includes static used in other modules**

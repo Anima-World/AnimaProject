@@ -10,7 +10,7 @@ async function payment() {
     const payment = await client.prepareTx({
         Account: wallet1.address,
         Destination: wallet2.address,
-        Amount: xrpToDrops(1),
+        Amount: xrpToDrops(10),
         TransactionType: "Payment",
         Memos: [
             {

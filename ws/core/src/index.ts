@@ -1,2 +1,3 @@
 import Client from "./XRPLClient";
-export {Client};
+import {EventEmitter,Events} from "./EventEmitter";
+export {Client,Events,EventEmitter};

@@ -13,6 +13,6 @@
     "noImplicitAny": true,
     "removeComments": true,
     "skipLibCheck": true,
-    "declaration": true
-  }
+    "declaration": true,
+  },
 }

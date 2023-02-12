@@ -1,0 +1,9 @@
+{
+  "name": "wallet_font",
+  "scripts": {
+    "serve": "vite",
+    "build": "run-p build-only",
+    "preview": "vite preview",
+    "build-only": "vite build"
+  }
+}

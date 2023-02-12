@@ -1,4 +1,4 @@
-## Anima Wallet
+## Anima Project
 ### Setup
 ```
 npm install
@@ -16,4 +16,4 @@ npm run build
 ```
 
 
-### [AnimaWorld](https://animaworld.net/).
+### [AnimaWorld](https://animaworld.net/)

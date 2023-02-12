@@ -1,7 +1,0 @@
-{
-  "name": "worker_base",
-  "main": "dist/index.js",
-  "scripts": {
-    "build": "tsc"
-  }
-}
